@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>I’m Sorry 🥺</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+
+<style>
+  * {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+  }
+
+  body {
+    background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+    text-align: center;
+    padding: 25px;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  h1 {
+    font-size: 2.6rem;
+  }
+
+  .box {
+    background: rgba(255,255,255,0.95);
+    padding: 26px;
+    border-radius: 24px;
+    max-width: 650px;
+    margin: auto;
+    box-shadow: 0 14px 35px rgba(0,0,0,0.25);
+    position: relative;
+  }
+
+  p {
+    font-size: 1.15rem;
+  }
+
+  button {
+    font-size: 1.05rem;
+    padding: 14px 22px;
+    margin: 12px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+  }
+
+  .yes {
+    background: #27ae60;
+    color: white;
+  }
+
+  .no {
+    background: linear-gradient(135deg, #ff6b6b, #ff9a9a);
+    color: white;
+    padding: 8px 14px;
+    font-size: 0.85rem;
+    position: relative;
+    animation: wobble 0.8s infinite;
+  }
+
+  @keyframes wobble {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(2deg); }
+    50% { transform: rotate(-2deg); }
+    75% { transform: rotate(2deg); }
+    100% { transform: rotate(0deg); }
+  }
+
+  #finalMsg, #typing, #extraMsg {
+    font-size: 1.35rem;
+    margin-top: 20px;
+    display: none;
+  }
+
+  img {
+    width: 190px;
+    margin-top: 15px;
+  }
+
+  /* Floating hearts */
+  .heart {
+    position: fixed;
+    bottom: -20px;
+    font-size: 20px;
+    animation: floatUp 6s linear infinite;
+    opacity: 0.6;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0); opacity: 0.6; }
+    100% { transform: translateY(-110vh); opacity: 0; }
+  }
+
+  /* Confetti */
+  .confetti {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    top: -10px;
+    animation: fall 3s linear infinite;
+  }
+
+  @keyframes fall {
+    to { transform: translateY(110vh) rotate(360deg); }
+  }
+
+  /* Screen shake */
+  .shake {
+    animation: shakeScreen 0.4s;
+  }
+
+  @keyframes shakeScreen {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+  }
+</style>
+</head>
+
+<body>
+
+<h1>😔 I OWE YOU AN APOLOGY 😔</h1>
+
+<div class="box" id="box">
+  <p>Dear <span id="name">My Favorite Person</span>,</p>
+
+  <p id="excuse">I messed up… impressively.</p>
+
+  <button class="yes" onclick="forgiven()">Okay… you’re forgiven 💗</button>
+  <button class="no" id="noBtn" onclick="nope()">NO 😶</button>
+
+  <p id="typing">Typing forgiveness… ⌨️</p>
+  <p id="finalMsg"></p>
+  <p id="extraMsg"></p>
+
+  <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif">
+</div>
+
+<audio id="forgiveSound" src="https://www.myinstants.com/media/sounds/sad-violin.mp3"></audio>
+<audio id="errorSound" src="https://www.myinstants.com/media/sounds/windows-error.mp3"></audio>
+
+<script>
+  // Random excuse
+  const excuses = [
+    "I genuinely didn’t think this through 😔",
+    "I had good intentions and bad execution",
+    "My brain pressed the wrong button",
+    "I misunderstood reality for a moment",
+    "I accept full clown responsibility 🤡"
+  ];
+  document.getElementById("excuse").innerText =
+    excuses[Math.floor(Math.random() * excuses.length)];
+
+  // NO button jitter
+  function nope() {
+    document.getElementById("errorSound").play();
+    const btn = document.getElementById("noBtn");
+    const x = (Math.random() * 50) - 25;
+    const y = (Math.random() * 50) - 25;
+    btn.style.transform = `translate(${x}px, ${y}px) rotate(${Math.random()*8 - 4}deg)`;
+  }
+
+  // Forgiven flow
+  function forgiven() {
+    document.getElementById("forgiveSound").play();
+    document.getElementById("typing").style.display = "block";
+    document.getElementById("box").classList.add("shake");
+    confetti();
+
+    setTimeout(() => {
+      document.getElementById("typing").style.display = "none";
+      document.getElementById("finalMsg").style.display = "block";
+      document.getElementById("finalMsg").innerHTML =
+        "🥹💞 Thank you for choosing kindness.<br>I really mean it when I say I’ll do better.";
+
+      setTimeout(() => {
+        document.getElementById("extraMsg").style.display = "block";
+        document.getElementById("extraMsg").innerHTML =
+          "PS: I’m still sorry by the way. Just in case.";
+      }, 2500);
+    }, 2000);
+  }
+
+  // Floating hearts
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerText = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 20 + 15 + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+  }, 600);
+
+  // Confetti
+  function confetti() {
+    for (let i = 0; i < 40; i++) {
+      const c = document.createElement("div");
+      c.className = "confetti";
+      c.style.left = Math.random() * 100 + "vw";
+      c.style.background = `hsl(${Math.random()*360}, 100%, 70%)`;
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 3000);
+    }
+  }
+</script>
+
+</body>
+</html>
